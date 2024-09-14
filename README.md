@@ -7,7 +7,7 @@ In the current world of digital imaging, one of the most challenging problems is
 
 ## Introduction
 
-We denote imaegs by two-dimensional functions of the form $f(x,y)$ where $x$ and $y$ represent the spatial coordinates and function value represents the intensity level (or the pixel value) at that point. Now, the image which has been degraded by noise can be formulated as follows: 
+We denote images by two-dimensional function of the form $f(x,y)$ where $x$ and $y$ represent the spatial coordinates and function value represents the intensity level (or the pixel value) at that point. Now, the image which has been degraded by noise can be formulated as follows: 
 ```math
 g(x,y) = f(x,y)*h(x,y) + n(x,y)
 ```
@@ -24,7 +24,16 @@ In this blog, we will consider that the image is degraded only by the additive n
 g(x,y) = f(x,y) + n(x,y)
 ```
 <br>
-We try to obtain the true image from the degraded image using filters and the resulting image is an estimate of the true image which is denoted by $\hat{f}(x,y)$.
+We try to obtain the true image from the degraded image using filters and the resulting image is an estimate of the true image which is denoted by a hat over the true image function.
+We will use the following X-ray image of the circuit board as an example in this blog.
+
+<br>
+<br>
+<p align="center">
+  <img src="https://drive.google.com/uc?id=1mPxV4G9hqqu64buHHpzkx_xmsEO1bEIv" />
+ <br>
+  X-ray scan of a circuit board - True image (Source: Digital Image processing (book) by Gonzalez)
+</p>
 
 ## Filters
 
@@ -48,11 +57,27 @@ When we take the harmonic mean of the neighbouring pixels. It works well for the
 ```math
 \hat{f}(x,y) = mn \left(\sum_{(r,c) \in S_{xy}} \frac{1}{g(r,c)}\right)^{-1}
 ```
+<br>
+<br>
+<p align="center">
+  <img src="https://drive.google.com/uc?id=1x0UJUJ9ctWZXYjm3iqjNfsozeT3JDwbd" />
+  <br>
+  (a) True image , (b) Image with Gaussian noise ,<br>(c) Result of AM filter on (b) , (d) Result of GM filter on (b)<br>(Source: Digital Image processing (book) by Gonzalez)
+</p>
+
 ### 2. Median filter
 When we take the median of the neighbouring pixels. It is the most common order-statistic (value is chosen based on ranking or order) spatial filter. It is particularly effective for salt-and-pepper noise with considerably less blurring than the mean filters.
 ```math
 \hat{f}(x,y) = \underset{(r,c) \in S_{xy}}{\text{median}}\{g(r,c)\} 
 ```
+
+<br>
+<br>
+<p align="center">
+  <img src="https://drive.google.com/uc?id=1XCG0XcYrD2HRZJTovy9DjeoeeDHt7MM1" />
+  <br>
+  (a) Image corrupted by salt-and-pepper noise , (b) Result of median filter on (a) ,<br>(c) Result of median filter on (b) , (d) Result of median filter on (c) <br>(Source: Digital Image processing (book) by Gonzalez)
+</p>
 
 ### 3. Max filter
 When we take the maximum pixel value in the neighbouring pixels. It is useful for finding the brightest points in an image or for brightening dark regions adjacent to bright areas and it also removes pepper noise.
@@ -66,6 +91,15 @@ When we take the minimum pixel value in the neighbouring pixels. It is useful fo
 \hat{f}(x,y) = \underset{(r,c) \in S_{xy}}{\text{min}}\{g(r,c)\} 
 ```
 
+<br> 
+<br>
+<p align="center">
+  <img src="https://drive.google.com/uc?id=1iYIrc82SMlvJnVvKYaA98nhj-uOc37MR" />
+  <br>
+  (a) Result of max filter on an image with pepper noise ,<br>(b) Result of min filter on an image with salt noise <br>(Source: Digital Image processing (book) by Gonzalez)
+</p>
+
+
 ### 5. Midpoint filter
 When we take the average of the maximum and the minimum pixel values in the neighbouring pixels. It works best for randomly distributed noise like Gaussian noise.
 ```math
@@ -77,6 +111,15 @@ When we remove $\frac{d}{2}$ smallest and $\frac{d}{2}$ largest elements (accord
 \hat{f}(x,y) = \frac{1}{mn-d} \sum_{(r,c) \in S_{xy}} g_R(r,c) 
 ```
 
+<br>
+<br>
+<p align="center">
+  <img src="https://drive.google.com/uc?id=1UXnPqYikl5JxLcvDkbxn4F2vZ6r-L4ij" />
+  <br>
+  (a) Image corrupted by Gaussian noise ,<br>(b) Result of alpha-trimmed mean filter on (a)<br>(Source: Digital Image processing (book) by Gonzalez)
+</p>
+
+
 ### 7. Adaptive filter
 This filter takes into regard how the image characteristics change from region to region and then applies the filter operation based on the characteristics of this region. The characteristics of a region can be defined by statistical measures like mean, variance, etc. 
 ```math
@@ -87,7 +130,24 @@ where
 - $\sigma_{S_{xy}}^2$ is the local variance of the neighbouring pixels
 - $\bar{z}$ is the local mean of the neighbouring pixels.
 
+<br>
+<br>
+<p align="center">
+  <img src="https://drive.google.com/uc?id=1M6Brn5XeKwqtSSIL15p6HSpr7goBKET5" />
+  <br>
+  (a) Image corrupted by Gaussian noise ,<br>(b) Result of adaptive filter on (a)<br>(Source: Digital Image processing (book) by Gonzalez)
+</p>
+
+
 ## Conclusion
 In conclusion, dealing with additive noise is a crucial step in enhancing image quality, whether we're working with everyday photos or complex scientific imaging techniques using satellite images. By applying the above discussed spatial filter techniques such as mean filters, median filters, adaptive filters, and more advanced algorithms, it's possible to significantly reduce additive noise and recover those details that comprise the true image. However, the impact of noise in the digital image doesn't stop at additive forms. 
 <br>
-Multiplicative noise, which scales with the intensity of the image, presents its own challenges, especially in fields like medical imaging, remote sensing, satellite imagery, etc. The multiplicative noise is relatively difficult to remove and requires even more computational power for the calculations. While this blog focuses on the topic of additive noise, the same principles of filtering and restoration can be extended to handle multiplicative noise, often requiring more sophisticated approaches such as inverse filters, weiner filters, etc. Taking care of both the additive and the multiplicative noise will help to make your images more clear and extract more information from them and help to create more data for your particular task. 
+Multiplicative noise, which scales with the intensity of the image, presents its own challenges, especially in fields like medical imaging, remote sensing, satellite imagery, etc. The multiplicative noise is relatively difficult to remove and requires even more computational power for the calculations. While this blog focuses on the topic of additive noise, the same principles of filtering and restoration can be extended to handle multiplicative noise, often requiring more sophisticated approaches such as inverse filters, weiner filters, etc. Taking care of both the additive and the multiplicative noise will help to make your images more clear and extract more information from them and help to create more data for your particular task.
+<br>
+<br>
+This blog's primary discussion is on the topic of removal of additive noise, I might also upload another blog discussing about the multiplicative noise, so stay tuned.
+
+## References for further reading 
+[1] [Digital Image processing by Gonzalez and Woods](https://dl.icdst.org/pdfs/files4/01c56e081202b62bd7d3b4f8545775fb.pdf)<br>
+[2] [A REVIEW PAPER: DIGITAL IMAGE FILTERING PROCESSING](https://www.researchgate.net/publication/356005521_A_REVIEW_PAPER_DIGITAL_IMAGE_FILTERING_PROCESSING)<br>
+[3] [Noise in Digital Image Processing](https://medium.com/@anishaswain/noise-in-digital-image-processing-55357c9fab71)
